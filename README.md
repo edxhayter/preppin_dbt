@@ -1,15 +1,11 @@
-Welcome to your new dbt project!
+### Preppin DBT
 
-### Using the starter project
+This repository will be used to hold all Preppin Data Challenges Completed in dbt Core
 
-Try running the following commands:
-- dbt run
-- dbt test
+### General Principles:
 
-
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+- Seeds will be used to load in csv's for practice using seeds.
+- Models will be built in folders for the particular challenges generally following the principles of modularization:
+  - staging: removing unecessary columns and renaming others to appropriate names and conducting any appropriate simple transformations
+  - intermediary: carrying out more complex operations and any combinations of tables required. The output of this should be a generally usable table for wider questions.
+  - final tables: any operations that make sense as specific for a given report (in this case the particular output)
