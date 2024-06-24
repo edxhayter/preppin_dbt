@@ -38,3 +38,6 @@ seeds:
     source_pd_2024wk6__input:
       +column_types:
         month_1: float
+
+vars:
+  bin_size: 5
