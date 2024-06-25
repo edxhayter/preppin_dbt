@@ -13,7 +13,13 @@ profile: "preppin_data"
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
-seed-paths: ["seeds"]
+seed-paths:
+  - seeds/2024wk6
+  - seeds/2024wk7
+  - seeds/2024wk8
+  - seeds/2024wk9
+  - seeds/2024wk10
+  - seeds/2024wk14
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
