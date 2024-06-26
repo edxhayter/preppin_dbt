@@ -1,6 +1,6 @@
 with raw_sales as (
 
-    select * from {{ ref('int_2024wk14__easter_sales')}}
+    select * from {{ ref('int_2024wk13__easter_sales')}}
 
 ),
 

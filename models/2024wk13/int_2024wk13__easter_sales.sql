@@ -6,7 +6,7 @@
 
 with sales as (
 
-    select * from {{ ref('stg_2024wk14__sales') }}
+    select * from {{ ref('stg_2024wk13__sales') }}
 
 ),
 

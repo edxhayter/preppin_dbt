@@ -19,6 +19,7 @@ seed-paths:
   - seeds/2024wk8
   - seeds/2024wk9
   - seeds/2024wk10
+  - seeds/2024wk13
   - seeds/2024wk14
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]

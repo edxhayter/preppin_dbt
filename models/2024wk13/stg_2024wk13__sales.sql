@@ -1,9 +1,9 @@
 {% set tables_to_union = [
-    ref('source_pd2024wk14__2020'),
-    ref('source_pd2024wk14__2021'),
-    ref('source_pd2024wk14__2022'),
-    ref('source_pd2024wk14__2023'),
-    ref('source_pd2024wk14__2024')
+    ref('source_pd2024wk13__2020'),
+    ref('source_pd2024wk13__2021'),
+    ref('source_pd2024wk13__2022'),
+    ref('source_pd2024wk13__2023'),
+    ref('source_pd2024wk13__2024')
 ] %}
 
 with unioned_sources as (
