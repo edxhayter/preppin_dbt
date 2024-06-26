@@ -22,6 +22,7 @@ seed-paths:
   - seeds/2024wk13
   - seeds/2024wk14
   - seeds/2021wk38
+  - seeds/2022wk13
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
@@ -43,3 +44,4 @@ models:
 
 vars:
   bin_size: 5
+  filter_value: 80

@@ -16,6 +16,10 @@ This repository will be used to hold all Preppin Data Challenges Completed in db
 
 - [2021 Week 38](/models/2021wk38)
 
+## 2022
+
+-[2022 Week 13](/models/2022wk13)
+
 ### 2024
 
 - [2024 Week 6](/models/2024wk6)
