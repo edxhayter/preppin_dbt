@@ -12,6 +12,10 @@ This repository will be used to hold all Preppin Data Challenges Completed in db
 
 ## Navigation
 
+### 2019
+
+- [2019 Week 29](/models/2019wk29)
+
 ### 2021
 
 - [2021 Week 38](/models/2021wk38)
