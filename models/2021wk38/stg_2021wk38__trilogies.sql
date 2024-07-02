@@ -9,7 +9,7 @@ transformed as (
     select
     
         trilogy_ranking,
-        replace(trilogy, 'trilogy', '') as trilogy
+        trim(replace(trilogy, 'trilogy', '')) as trilogy
 
     from source
 
