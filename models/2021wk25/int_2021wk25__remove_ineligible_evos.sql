@@ -18,10 +18,15 @@ filter_evos as (
 
     select
 
-        evos.*
+        evos.*,
+
+        case
+            when gen1.poke_name is null then 1
+            else 0
+        end as flag
 
     from evos
-    join gen1 on evos.poke_name = gen1.poke_name
+    left join gen1 on evos.poke_name = gen1.poke_name
 
 ),
 
@@ -34,24 +39,40 @@ repivot_evo as (
         *
 
     from filter_evos
-        pivot(min(poke_name) for evo_direction in (
+        pivot(max(poke_name) for evo_direction in (
             'EVOLVING_FROM',
             'EVOLVING_TO'
         )) 
 ),
 
--- transform and filter the bad rows
-transformed as (
+max_flag as (
 
     select
 
         record_id,
-        "'EVOLVING_FROM'" as EVOLVES_FROM,
-        "'EVOLVING_TO'" as EVOLVES_TO
+        max(flag) as flag
+
+    from repivot_evo
+    group by record_id
+
+),
+
+-- table with same amount of rows but now a flag if a record needs to be filtered.
+transformed as (
+
+    select
+
+        repivot_evo.record_id,
+        max(repivot_evo."'EVOLVING_FROM'") as EVOLVES_FROM,
+        max(repivot_evo."'EVOLVING_TO'") as EVOLVES_TO,
+
+        max_flag.flag
     
     from repivot_evo
+    inner join max_flag on max_flag.record_id = repivot_evo.record_id
+    group by repivot_evo.record_id, max_flag.flag
 
 )
 
 
-select * from repivot_evo
+select * from transformed

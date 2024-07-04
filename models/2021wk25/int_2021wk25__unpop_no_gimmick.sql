@@ -1,6 +1,11 @@
 -- Import CTEs
+with gen1 as (
 
-with unpop as (
+    select * from {{ ref('int_2021wk25__gen1_evo_group') }}
+
+),
+
+unpop as (
 
     select * from {{ ref('int_2021wk25__unpop_pokemon') }}
 
@@ -8,7 +13,7 @@ with unpop as (
 
 gimmick as (
 
-    select * from {{ ref('int_2021wk25__gimmick_exclusions') }}
+    select * from {{ ref('int_2021wk25__gimmick_evo_group') }}
 
 ),
 
@@ -20,32 +25,58 @@ unattainable as (
 
 -- exclude gimmicks
 
-unpop_no_gimmick as (
+gen1_no_gimmick as (
 
     select 
 
-        unpop.*,
+        gen1.poke_name,
+        gen1.evolution_group
 
-        gimmick.gimmick_flag
-
-    from unpop
-    left join gimmick on unpop.poke_name = gimmick.poke_name
-    where gimmick_flag is null
+    from gen1
+    left outer join gimmick on gen1.evolution_group = gimmick.evolution_group
+    where gimmick.evolution_group is null
 
 ),
 
 -- exclude attainable
 
-unpop_unattainable as (
+gen1_unattainable as (
 
     select
 
-        unpop_no_gimmick.evolution_group
+        gen1_no_gimmick.evolution_group
 
-    from unpop_no_gimmick
-    inner join unattainable on unpop_no_gimmick.poke_name = unattainable.name
+    from gen1_no_gimmick
+    inner join unattainable on gen1_no_gimmick.poke_name = unattainable.name
     
+
+),
+
+-- exclude the not allowed evos
+
+final_groups as (
+
+    select
+
+        gen1_unattainable.evolution_group
+
+    from gen1_unattainable
+    inner join unpop on gen1_unattainable.evolution_group = unpop.evolution_group
+
+),
+
+-- join the final groups back to the pokemon level table
+
+final as (
+
+    select
+
+        gen1.poke_name,
+        gen1.evolution_group
+
+    from gen1
+    inner join final_groups on gen1.evolution_group = final_groups.evolution_group
 
 )
 
-select * from unpop_unattainable
+select * from final

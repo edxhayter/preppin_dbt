@@ -2,36 +2,13 @@
 
 with gen1 as (
 
-    select * from {{ ref('stg_2021wk25__gen1') }}
-
-),
-
-evo_group as (
-
-    select * from {{ ref('stg_2021wk25__evo_group') }}
+    select * from {{ ref("int_2021wk25__gen1_evo_group") }}
 
 ),
 
 evo as (
 
-    select * from {{ ref('stg_2021wk25__evos') }}
-
-),
-
--- Join evogroup to gen 1 mon
-
-gen1_evo as (
-
-    select
-
-        gen1.*,
-
-        evo_group.evolution_group,
-        evo_group.starter_flag,
-        evo_group.legendary_flag
-
-    from gen1
-    join evo_group on gen1.dex_num = evo_group.dex_num
+    select * from {{ ref('int_2021wk25__remove_ineligible_evos') }}
 
 ),
 
@@ -45,7 +22,7 @@ gen1_subset as (
         poke_name,
         evolution_group
 
-    from gen1_evo
+    from gen1
     where starter_flag != 1 and legendary_flag != 1
 
 ),
@@ -59,49 +36,28 @@ evolve_fan_out as (
         gen1_subset.poke_name,
         gen1_subset.evolution_group,
         
-        evo.evolving_to,
-        evo.evolving_from
+        evo.evolves_to,
+        evo.evolves_from,
+        evo.flag
 
     from evo
-    inner join gen1_subset on evo.evolving_from = gen1_subset.poke_name or evo.evolving_to = gen1_subset.poke_name
+    left join gen1_subset on evo.evolves_from = gen1_subset.poke_name or evo.evolves_to = gen1_subset.poke_name
 
 ),
 
--- filter the fanned out data on a gen1 reference table - only return rows which match to both
+-- aggregate the table to evolution group
+-- then filter out where max(flag) is 1, leaving a list of evolution groups to focus on.
 
-remove_post_evo as (
+final as (
 
-    select 
-
-        evolve_fan_out.*
+    select
+        
+        evolution_group
 
     from evolve_fan_out
-    inner join gen1 on evolve_fan_out.evolving_to = gen1.poke_name
-
-),
-
-remove_pre_evo as (
-
-    select 
-
-        remove_post_evo.*
-
-    from remove_post_evo
-    left join gen1 on remove_post_evo.evolving_from = gen1.poke_name
+    group by evolution_group
+    having max(flag) < 1
 
 )
 
-select
-     
-    *
-
-from remove_post_evo
-
--- union
-
--- select
-    
---     poke_name,
---     evolution_group
-
--- from post_evolve_gen1
+select * from final

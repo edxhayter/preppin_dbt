@@ -41,17 +41,6 @@ combined as (
     {% endif %}
     
     {% endfor %}
-),
-
-gimmick_flag as (
-
-    select
-
-        *,
-        1 as gimmick_flag
-
-    from combined
-
 )
 
-select * from gimmick_flag
+select * from combined
