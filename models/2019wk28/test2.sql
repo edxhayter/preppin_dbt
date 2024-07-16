@@ -1,0 +1,1 @@
+select * from {{ ref('int_2019wk28__header') }}
