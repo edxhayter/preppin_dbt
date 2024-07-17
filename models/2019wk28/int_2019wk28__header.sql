@@ -56,7 +56,7 @@ rename_table as (
 
     select
 
-        h.new_header,
+        upper(regexp_replace(h.new_header, '[^A-Za-z0-9_]', '_')) as new_header,
 
         original_headers.header
 

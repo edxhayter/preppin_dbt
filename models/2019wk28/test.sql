@@ -8,11 +8,11 @@ with source as (
 ),
 
 test_macro as (
+        
+        select
 
-        select 
-        
             {{ dynamic_rename('int_2019wk28__header','int_2019wk28__data') }}
-        
+
         from source
 
 )
