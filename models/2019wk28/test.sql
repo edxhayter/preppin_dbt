@@ -1,9 +1,13 @@
--- depends_on: {{ ref('int_2019wk28__header') }}
 
-
-with source as (
+with data as (
 
     select * from {{ ref('int_2019wk28__data') }}
+
+),
+
+header_mapping as (
+
+    select * from {{ ref('int_2019wk28__header') }}
 
 ),
 
@@ -13,7 +17,7 @@ test_macro as (
 
             {{ dynamic_rename('int_2019wk28__header','int_2019wk28__data') }}
 
-        from source
+        from data
 
 )
 
