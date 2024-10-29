@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: hacker_interview
+    database: til_playground  
+    schema: ollie  
+    tables:
+      - name: submissions
+      - name: hackers
