@@ -62,4 +62,14 @@ suppressed AS (
 
 -- flatten out the song column when a dance has multiple songs so that there is a row for each song
 
-SELECT * FROM suppressed
+-- all songs are in speech marks in the music section, sometimes split by ',' sometimes '&' 
+-- but song names and artists also use these characters so they arent a delimiter 
+SELECT 
+
+    *,
+    regexp_substr_all(music, '\\"(.*?)\\".*?[, &].*?\\"(.*?)\\"', 1, 1, 'e')
+
+FROM suppressed
+WHERE regexp_count(music, '\\".*?\\",|&.*?\\".*?\\"') >= 1
+
+
