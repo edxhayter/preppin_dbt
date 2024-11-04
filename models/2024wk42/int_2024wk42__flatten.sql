@@ -102,9 +102,11 @@ final AS (
 
     SELECT
 
-    * EXCEPT (music_piece, song_artist),
+    * EXCLUDE (music_piece, song_artist),
     replace(split_part(song_artist, '—', 1), '"', '') AS song,
     split_part(song_artist, '—', 2) AS artist 
+
+    FROM long_unpivot
 
 )
 
