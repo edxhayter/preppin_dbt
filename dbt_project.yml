@@ -29,6 +29,7 @@ seed-paths:
   - seeds/2021wk27
   - seeds/2024wk28
   - seeds/2024wk42
+  - seeds/2024wk43
 
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
