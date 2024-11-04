@@ -58,8 +58,54 @@ suppressed AS (
     SELECT * FROM solos
     UNION ALL
     SELECT * FROM joint
-)
+),
 
 -- flatten out the song column when a dance has multiple songs so that there is a row for each song
 
-SELECT * FROM suppressed
+piped AS (
+    SELECT 
+
+        * EXCLUDE music,
+        REPLACE(REPLACE(REPLACE(music, ',"', '|'), '&"', '|'), '& "', '|') AS music
+
+
+    FROM suppressed
+
+),
+
+split AS (
+
+    SELECT 
+
+        * EXCLUDE music,
+        split_part(music, '|', 1) AS music_1,
+        split_part(music, '|', 2) AS music_2,
+        split_part(music, '|', 3) AS music_3,
+        split_part(music, '|', 4) AS music_4
+
+
+    FROM piped
+
+),
+
+long_unpivot AS (
+
+    SELECT 
+        *
+    FROM split
+    UNPIVOT (song_artist FOR music_piece IN (music_1, music_2, music_3, music_4))
+    WHERE song_artist != ''
+        
+),
+
+final AS (
+
+    SELECT
+
+    * EXCEPT (music_piece, song_artist),
+    replace(split_part(song_artist, '—', 1), '"', '') AS song,
+    split_part(song_artist, '—', 2) AS artist 
+
+)
+
+SELECT * FROM final
